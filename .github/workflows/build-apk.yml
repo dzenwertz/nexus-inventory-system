@@ -40,14 +40,15 @@ jobs:
         with:
           tag_name: v1.0.0
           name: NexusInventory Release v1.0.0
+          overwrite: true
           body: |
             ## NexusInventory Mobile & Backend Release v1.0.0 🚀
             
             ### Included Deliverables:
-            - **nexus-inventory-mobile-debug.apk**: Android App binary (Kotlin, Jetpack Compose, Clean Architecture).
+            - **nexus-inventory-mobile.apk**: Android App binary (Kotlin, Jetpack Compose, Clean Architecture).
             - **nexus-inventory-backend.jar**: Spring Boot 3.2 REST API Server.
           files: |
-            nexus-inventory-mobile/app/build/outputs/apk/debug/app-debug.apk
-            nexus-inventory-backend/target/nexus-inventory-backend-1.0.0-SNAPSHOT.jar
+            nexus-inventory-mobile/app/build/outputs/apk/debug/*.apk
+            nexus-inventory-backend/target/*.jar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
