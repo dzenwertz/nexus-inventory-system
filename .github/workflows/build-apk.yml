@@ -19,25 +19,20 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Setup Gradle
+      - name: Setup Gradle 8.5
         uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: 8.5
 
       - name: Build Android APK
         run: |
           cd nexus-inventory-mobile
-          chmod +x gradlew || true
-          gradle assembleDebug
+          gradle assembleDebug --stacktrace
 
       - name: Build Spring Boot Backend JAR
         run: |
           cd nexus-inventory-backend
           mvn clean package -DskipTests
-
-      - name: Upload Android APK Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: nexus-inventory-mobile-debug.apk
-          path: nexus-inventory-mobile/app/build/outputs/apk/debug/app-debug.apk
 
       - name: Create GitHub Release & Upload APK
         uses: softprops/action-gh-release@v2
