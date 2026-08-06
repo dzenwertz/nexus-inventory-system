@@ -11,7 +11,7 @@ import com.nexus.inventory.ui.theme.NexusTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate()
+        super.onCreate(savedInstanceState)
         setContent {
             NexusTheme {
                 Surface(
