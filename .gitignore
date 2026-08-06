@@ -1,0 +1,23 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# Java / Maven
+nexus-inventory-backend/target/
+
+# Android / Gradle
+nexus-inventory-mobile/.gradle/
+nexus-inventory-mobile/build/
+nexus-inventory-mobile/app/build/
+nexus-inventory-mobile/local.properties
+*.apk
+*.keystore
+*.jks
+
+# Logs
+*.log
