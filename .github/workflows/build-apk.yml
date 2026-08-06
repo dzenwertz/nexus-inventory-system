@@ -1,0 +1,58 @@
+name: Build & Release Android APK
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Build Android APK
+        run: |
+          cd nexus-inventory-mobile
+          chmod +x gradlew || true
+          gradle assembleDebug
+
+      - name: Build Spring Boot Backend JAR
+        run: |
+          cd nexus-inventory-backend
+          mvn clean package -DskipTests
+
+      - name: Upload Android APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: nexus-inventory-mobile-debug.apk
+          path: nexus-inventory-mobile/app/build/outputs/apk/debug/app-debug.apk
+
+      - name: Create GitHub Release & Upload APK
+        uses: softprops/action-gh-release@v2
+        if: github.ref == 'refs/heads/main'
+        with:
+          tag_name: v1.0.0
+          name: NexusInventory Release v1.0.0
+          body: |
+            ## NexusInventory Mobile & Backend Release v1.0.0 🚀
+            
+            ### Included Deliverables:
+            - **nexus-inventory-mobile-debug.apk**: Android App binary (Kotlin, Jetpack Compose, Clean Architecture).
+            - **nexus-inventory-backend.jar**: Spring Boot 3.2 REST API Server.
+          files: |
+            nexus-inventory-mobile/app/build/outputs/apk/debug/app-debug.apk
+            nexus-inventory-backend/target/nexus-inventory-backend-1.0.0-SNAPSHOT.jar
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
